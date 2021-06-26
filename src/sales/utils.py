@@ -1,4 +1,9 @@
-import 
+import uuid
 
+
+## To generate some ID (Transaction ID)
 def generate_code():
-    pass
+    code = str(uuid.uuid4()).replace('-','').upper()[:12]
+    return code
+
+

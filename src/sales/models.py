@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
-from django.utils import translation
+from .utils import generate_code
 
 # Create your models here.
 
@@ -25,7 +25,7 @@ class Position(models.Model):
 class Sale(models.Model):
     transaction_id = models.CharField(max_length=12,blank=True)
     positions = models.ManyToManyField(Position)
-    total_price = models.FloatField(blank=True)
+    total_price = models.FloatField(blank=True,null=True)
     customer = models.ForeignKey(Customer,on_delete=models.CASCADE)
     salesman = models.ForeignKey(Profile,on_delete=models.CASCADE)
     created = models.DateTimeField(blank= True)
@@ -38,7 +38,7 @@ class Sale(models.Model):
 
     def save(self,*args,**kwargs):
         if self.transaction_id=="":
-            self.transaction_id = ''
+            self.transaction_id = generate_code()
         if self.created is None:
             self.created = timezone.now()
         return super().save(*args,**kwargs)
